@@ -1,0 +1,160 @@
+unit unit_pessoas_campos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.ComCtrls, Vcl.ExtCtrls,
+  unit_funcoes, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls,
+  SWHComboBox, unit_dados, Data.DB, SWHEdit, SWHMaskEdit, SWHDBEdit;
+
+type
+  Tform_pessoas_campos = class(TForm)
+    pnl_fundo: TPanel;
+    pgc_pessoas: TPageControl;
+    tbs_dados_gerais: TTabSheet;
+    tbs_endereco: TTabSheet;
+    pnl_topo: TPanel;
+    pnl_botoes: TPanel;
+    pnl_confirmar: TPanel;
+    pnl_cancelar: TPanel;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    spb_dados: TSpeedButton;
+    spb_endereco: TSpeedButton;
+    pnl_barra_botao: TPanel;
+    cmb_tipo_pessoa: TSWHComboBox;
+    dbe_fantasia: TSWHDBEdit;
+    dbe_cpf_cnpj: TSWHMaskEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    lbl_cpf_cnpj: TLabel;
+    dtp_data_cadastro: TDateTimePicker;
+    Label4: TLabel;
+    pnl_pessoa: TPanel;
+    Label5: TLabel;
+    rb_fisica: TRadioButton;
+    rb_juridica: TRadioButton;
+    lbl_razao: TLabel;
+    dbe_razao_social: TSWHDBEdit;
+    dbe_ie_rg: TSWHMaskEdit;
+    lbl_ie_rg: TLabel;
+    dbe_contato: TSWHDBEdit;
+    Label8: TLabel;
+    Label9: TLabel;
+    dbe_email: TSWHDBEdit;
+    dbe_home_page: TSWHDBEdit;
+    Label10: TLabel;
+    Label11: TLabel;
+    pnl_cep: TPanel;
+    dbe_cep: TSWHMaskEdit;
+    spb_pesquisa: TSpeedButton;
+    dbe_endereco: TSWHDBEdit;
+    Label12: TLabel;
+    Label13: TLabel;
+    SWHDBEdit7: TSWHDBEdit;
+    Label14: TLabel;
+    SWHDBEdit8: TSWHDBEdit;
+    Label15: TLabel;
+    dbe_bairro: TSWHDBEdit;
+    Label16: TLabel;
+    dbe_cidade: TSWHDBEdit;
+    Label17: TLabel;
+    dbe_estado: TSWHDBEdit;
+    dbe_fone: TSWHDBEdit;
+    Label18: TLabel;
+    dbe_fone2: TSWHDBEdit;
+    Label19: TLabel;
+    dbe_fone_2: TSWHDBEdit;
+    dbe_fone4: TSWHDBEdit;
+    Label20: TLabel;
+    Label21: TLabel;
+    edtTeste: TSWHEdit;
+    SWHMaskEdit1: TSWHMaskEdit;
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure spb_dadosClick(Sender: TObject);
+    procedure spb_enderecoClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure rb_fisicaClick(Sender: TObject);
+    procedure spb_pesquisaClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  form_pessoas_campos: Tform_pessoas_campos;
+
+implementation
+
+{$R *.dfm}
+
+procedure Tform_pessoas_campos.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action:= cafree;
+end;
+
+procedure Tform_pessoas_campos.FormResize(Sender: TObject);
+begin
+  pnl_fundo.Left := Round( form_pessoas_campos.Width /2 - pnl_fundo.Width/2 );
+end;
+
+procedure Tform_pessoas_campos.FormShow(Sender: TObject);
+begin
+  prc_ocultar_tabs ( pgc_pessoas );
+
+  dtp_data_cadastro.Date:= Date;
+  rb_fisica.Checked     := True;
+  rb_fisicaClick(Self);
+end;
+
+procedure Tform_pessoas_campos.rb_fisicaClick(Sender: TObject);
+begin
+  if rb_fisica.Checked then
+  begin
+    lbl_cpf_cnpj.Caption     := 'CPF *';
+    lbl_ie_rg.Caption        := 'RG *';
+
+    dbe_cpf_cnpj.TipoMascara := tmCPF;
+
+    lbl_razao.Visible        := False;
+    dbe_razao_social.Visible := False;
+
+  end else
+  if rb_juridica.Checked then
+  begin
+    lbl_cpf_cnpj.Caption     := 'CNPJ *';
+    lbl_ie_rg.Caption        := 'Inscrição Estadual *';
+
+    dbe_cpf_cnpj.TipoMascara := tmCNPJ;
+
+    lbl_razao.Visible        := True;
+    dbe_razao_social.Visible := True;
+  end;
+end;
+
+procedure Tform_pessoas_campos.SpeedButton2Click(Sender: TObject);
+begin
+  form_pessoas_campos.close;
+end;
+
+procedure Tform_pessoas_campos.spb_dadosClick(Sender: TObject);
+begin
+  pgc_pessoas.ActivePage := tbs_dados_gerais;
+end;
+
+procedure Tform_pessoas_campos.spb_enderecoClick(Sender: TObject);
+begin
+    pgc_pessoas.ActivePage := tbs_endereco;
+end;
+
+procedure Tform_pessoas_campos.spb_pesquisaClick(Sender: TObject);
+begin
+  //executa a funcao de buscar o cep  -- recomendo o acbrCep
+end;
+
+end.
